@@ -8,7 +8,8 @@ const community = new SteamCommunity(); //Sets up new community.
 const TradeOfferManager = require('steam-tradeoffer-manager'); //Requires a module for handling trade offers.
 const SteamTotp = require('steam-totp'); //Requires a module
 const colors = require('colors'); //Requires colors.
-
+const compare = require('./modules/compare');
+const tf2items = require('tf2-items');
 const manager = new TradeOfferManager({ //CREATES A NEW MANAGER for trades
     steam: client,
     community: community,
@@ -41,19 +42,33 @@ processOffer = (offer) => {
     } else {
         let partner = offer.partner.getSteamID64(); //Gets the partners steam64 id,
         let iToGive = offer.itemsToGive;
+        let iToReceive = offer.itemsToReceive;
+        console.log(iToGive);
+
+        // COMPARE THE ITEMS IN THE TRADE WITH THE LISTED ITEMS
         let botItems = [];
-        let listedItems = [];
         for(let i = 0; i < iToGive.length; i++){
-            botItems.push(iToGive[i].market_hash_name);
+            botItems.push(iToGive[i].id);
         }
-        api.checkMyListings((err, res) => {
+        console.log(botItems);
+        compare.compare(botItems, (err, item) => {
             if(err) console.log(err);
-            listedItems = JSON.parse(res);
-            listedItems = listedItems.listings;
-            for(let i = 0; i < listedItems.length; i++){
-                console.log(listedItems[i].item.market_hash_name);
-            }
+            let wantedUSD = item.currencies.usd; //THE SELLING PRICE IN USD ON BACKPACK.tf
+            let wantedMetal = item.currencies.metal; //SELLING PRICE IN METAL ON BACKPACK.tf
+            let wantedKeys = item.currencies.keys; //SELLING PRICE IN KEYS ON BACKPACK.tf
+            console.log("Item user wants to buy is: " + item.item.id + " and we sell it for: " + wantedUSD);
+
+            //Deal with the partners offer and values
+            //GET THE ID OF SCRAP METAL AND THEN JUST CHECK IF IT INCLUDES THE AMOUNT OF SCRAP METAL AS NEEDED
+            let metalAmount = 0;
+            let keysAmount = 0;
+            // Check the keys or the metal inside the trade offer.
+            
+
+
         });
+
+
 
 
     }

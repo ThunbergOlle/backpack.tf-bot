@@ -1,0 +1,9 @@
+{
+  "username": "Steam Username",
+  "password": "Steam Password",
+  "sharedSecret": "Steam shared secret",
+  "identitySecret": "Steam identity secret",
+  "api_token": "backpack.tf api token",
+  "api_key": "backpack.tf api key",
+  "appid": 440
+}
